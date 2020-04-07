@@ -5,7 +5,6 @@
 ### > 참고자료
 
 - [Why does everyone use Git in a centralized manner?](https://softwareengineering.stackexchange.com/questions/315252/why-does-everyone-use-git-in-a-centralized-manner)
-- [svn 능력자를 위한 git 개념 가이드]([file:///Users/junkim/Downloads/SVN%20%EB%8A%A5%EB%A0%A5%EC%9E%90%EB%A5%BC%20%EC%9C%84%ED%95%9C%20GIT%20%EA%B0%9C%EB%85%90%20%EA%B0%80%EC%9D%B4%EB%93%9C.pdf](file:///Users/junkim/Downloads/SVN 능력자를 위한 GIT 개념 가이드.pdf))
 - [Git vs Mercurial](https://d2.naver.com/helloworld/1011)
 - [Git from the Bottom Up](https://jwiegley.github.io/git-from-the-bottom-up/)
 - [pro git book](https://git-scm.com/book/ko/v2)
