@@ -22,7 +22,7 @@ CSS를 HTML에 적용하는 세 가지의 방법이 있습니다. HTML의 엘리
 
 CSS 규칙 적용의 우선 순위는 크게 세 가지로 나뉩니다.
 
-2. 내부에 지정한 속성의 형태와 값에 따라 우선순위가 달라집니다. 이 부분에 대한 순서는 아래와 같습니다
+1. 내부에 지정한 속성의 형태와 값에 따라 우선순위가 달라집니다. 이 부분에 대한 순서는 아래와 같습니다
 
    `!important 지정한 속성 > Inline Style Attribute > #id로 지정한 속성 > .class로 지정한 속성, pseudo-class > Tag element, Pseudo-element`
 
