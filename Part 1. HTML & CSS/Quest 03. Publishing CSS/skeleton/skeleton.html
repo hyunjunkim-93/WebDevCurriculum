@@ -3,8 +3,257 @@
 	<head>
 		<meta charset="UTF-8">
 		<link rel="stylesheet" href="./skeleton.css">
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+		<script src="https://code.iconify.design/1/1.0.5/iconify.min.js"></script>
 	</head>
 	<body>
 		<!-- TODO: Quest 1에서 완성한 HTML을 바탕으로 필요한 부분을 수정해 보세요 -->
+		<header class="header">
+			<div class="header--left">
+				<span class="iconify" data-icon="octicon:mark-github" data-inline="false"></span>
+				<div class="header-search">
+					<span>This repository</span>
+					<input type="text" placeholder="Search">
+				</div>
+
+				<nav class="header-link">
+					<ul>
+						<li><a href="">Pull Requests</a></li>
+						<li><a href="">Issues</a></li>
+						<li><a href="">Marketplace</a></li>
+						<li><a href="">Explore</a></li>
+					</ul>
+				</nav>
+			</div>
+			<div class="header--right">
+				<a href="">
+					<span class="iconify" data-icon="octicon:bell" data-inline="false"></span>
+				</a>
+				<button>
+					<span class="iconify" data-icon="octicon:plus" data-inline="false"></span>
+					<span class="iconify triangle-down" data-icon="octicon:triangle-down" data-inline="false"></span>
+				</button>
+				<button>
+					<img src="https://res.cloudinary.com/dgggcrkxq/image/upload/v1586271210/noticon/sageach1qrmmyfufwli1.gif" alt="User icon">
+					<span class="iconify triangle-down" data-icon="octicon:triangle-down" data-inline="false"></span>
+				</button>
+			</div>
+		</header>
+
+		<section class="main">
+			<header class="main-header">
+				<section class="main-title">
+					<h1 class="main-title--left">
+						<span class="iconify" data-icon="octicon:repo" data-inline="false"></span>
+						<a class="title-author decoration-underline--hover" href="">Knowre</a>
+						<span>/</span>
+						<a class="title-repo decoration-underline--hover" href="">WebDevCurriculum</a>
+					</h1>
+
+					<ul class="main-title--right">
+						<li>
+							<button>
+								<span class="iconify title-icon--right" data-icon="octicon:eye" data-inline="false"></span>
+								Unwatch
+								<span class="iconify triangle-down" data-icon="octicon:triangle-down" data-inline="false"></span>
+							</button>
+							<a href="">19</a>
+						</li>
+						<li>
+							<button>
+								<span class="iconify title-icon--right" data-icon="octicon:star" data-inline="false"></span>
+								Star
+							</button>
+							<a href="">113</a>
+						</li>
+						<li>
+							<button>
+								<span class="iconify title-icon--right" data-icon="octicon:repo-forked" data-inline="false"></span>
+								Fork
+							</button>
+							<a href="">106</a>
+						</li>
+					</ul>
+				</section>
+
+				<nav class="main-link">
+					<ul>
+						<li><a class="link-box" href="javascript:void(0)">
+							<span class="iconify" data-icon="octicon:code" data-inline="false"></span>
+							<span class="link-title">Code</span>
+						</a></li>
+						<li><a class="link-box" href="javascript:void(0)">
+							<span class="iconify" data-icon="octicon:issue-opened" data-inline="false"></span>
+							<span class="link-title">Issues</span>
+							<span class="link-cnt">0</span>
+						</a></li>
+						<li><a class="link-box" href="javascript:void(0)">
+							<span class="iconify" data-icon="octicon:git-pull-request" data-inline="false"></span>
+							<span class="link-title">Pull Requests</span>
+							<span class="link-cnt">1</span>
+						</a></li>
+						<li><a class="link-box" href="javascript:void(0)">
+							<span class="iconify" data-icon="octicon:project" data-inline="false"></span>
+							<span class="link-title">Projects</span>
+							<span class="link-cnt">0</span>
+						</a></li>
+						<li><a class="link-box" href="javascript:void(0)">
+							<span class="iconify" data-icon="octicon:graph" data-inline="false"></span>
+							<span class="link-title">Insights</span>
+						</a></li>
+					</ul>
+				</nav>
+			</header>
+
+			<section class="main-detail">
+				<h2 class="main-description">
+					KnowRe web development curriculum for noobs
+				</h2>
+
+				<nav class="main-link--secondary">
+					<ul class="link-list">
+						<li><a class="link-box--secondary" href="">
+							<span class="iconify" data-icon="octicon:history" data-inline="false"></span>
+							<div class="link-text">
+								<span class="link-cnt--bold">44</span>
+								<span>commits</span>
+							</div>
+						</a></li>
+						<li><a class="link-box--secondary" href="">
+							<span class="iconify" data-icon="octicon:git-branch" data-inline="false"></span>
+							<div class="link-text">
+								<span class="link-cnt--bold">1</span>
+								<span>branch</span>
+							</div>
+						</a></li>
+						<li><a class="link-box--secondary" href="">
+							<span class="iconify" data-icon="octicon:tag" data-inline="false"></span>
+							<div class="link-text">
+								<span class="link-cnt--bold">0</span>
+								<span>releases</span>
+							</div>
+						</a></li>
+						<li><a class="link-box--secondary" href="">
+							<span class="iconify" data-icon="octicon:organization" data-inline="false"></span>
+							<div class="link-text">
+								<span class="link-cnt--bold">2</span>
+								<span>contributors</span>
+							</div>
+						</a></li>
+						<li><a class="link-box--secondary" href="">
+							<span class="iconify" data-icon="octicon:law" data-inline="false"></span>
+							<div class="link-text">
+								<span>MIT</span>
+							</div>
+						</a></li>
+					</ul>
+					<ul class="link-list--secondary">
+						<li></li>
+						<li></li>
+						<li></li>
+					</ul>
+				</nav>
+
+				<div class="main-option">
+					<div class="main-option--left">
+						<button class="option-btn btn-normal">
+							<span>Branch:</span>
+							<span class="font-bold">master</span>
+							<span class="iconify triangle-down" data-icon="octicon:triangle-down" data-inline="false"></span>
+						</button>
+						<button class="btn-normal">
+							<span class="font-bold">New pull request</span>
+						</button>
+					</div>
+	
+					<div class="main-option--right">
+						<div class="btn-group">
+							<button class="btn-normal">Create new file</button>
+							<button class="btn-normal">Upload files</button>
+							<button class="btn-normal">Find file</button>
+						</div>
+						<button class="btn-download">
+							<span>Clone or download</span>
+							<span class="iconify triangle-down" data-icon="octicon:triangle-down" data-inline="false"></span>
+						</button>
+					</div>
+				</div>
+
+				<section class="main-contents">
+					<header class="main-notification">
+						<div class="main-notification--left">
+							<img class="nori-logo" src="https://cdn2.hubspot.net/hub/5626518/hubfs/Square%20Balloon%202x.png?width=800&name=Square%20Balloon%202x.png" alt="User icon">
+							<a href="">KnowRe</a>
+							<span>Quest 02 added constraint</span>
+						</div>
+						<div class="main-notification--right">
+							<span>Latest commit</span>
+							<a href="">8a3080e</a>
+							<span>on 7 Aug 2016</span>
+						</div>
+					</header>
+
+					<ul class="main-list">
+						<li>
+							<span class="folder-name">
+								<span class="iconify list-icon" data-icon="octicon:file-directory" data-inline="false"></span>
+								<span>
+									<span>Part 0. git /</span>
+									<a class="name-link" href="">Quest 00. Hello, git</a>
+								</span>
+							</span>
+							<a class="commit-link" href="">Part 2 finished</a>
+							<span>2 years ago</span>
+						</li>
+						<li>
+							<span class="folder-name">
+								<span class="iconify list-icon" data-icon="octicon:file-directory" data-inline="false"></span>
+								<a class="name-link" href="">Part 1. HTML & CSS</a>
+							</span>
+							<a class="commit-link" href="">Quest 02 added constraint</a>
+							<span>2 years ago</span>
+						</li>
+						<li>
+							<span class="folder-name">
+								<span class="iconify list-icon" data-icon="octicon:file" data-inline="false"></span>
+								<a class="name-link" href="">README.md</a>
+							</span>
+							<a class="commit-link" href="">Fix: Removed advertisement</a>
+							<span>2 years ago</span>
+						</li>
+					</ul>
+				</section>
+			</section>
+
+			<article class="main-article">
+				<h3 class="article-title">
+					<span class="iconify" data-icon="octicon:book" data-inline="false"></span>
+					README.md
+				</h3>
+				<section class="main-content">
+					<h1 class="markdown-h1">KnowRe web development curriculum 2018</h1>
+				</section>
+			</article>
+		</section>
+
+		<footer class="footer">
+			<ul class="footer--left">
+				<li>© 2018 GitHub Inc.</li>
+				<li><a href="">Terms</a></li>
+				<li><a href="">Privacy</a></li>
+				<li><a href="">Security</a></li>
+				<li><a href="">Status</a></li>
+				<li><a href="">Help</a></li>
+			</ul>
+			<span class="iconify" data-icon="octicon:mark-github" data-inline="false"></span>
+			<ul class="footer--right">
+				<li><a href="">Contact Github</a></li>
+				<li><a href="">API</a></li>
+				<li><a href="">Training</a></li>
+				<li><a href="">Shop</a></li>
+				<li><a href="">Blog</a></li>
+				<li><a href="">About</a></li>
+			</ul>
+		</footer>
 	</body>
 </html>
