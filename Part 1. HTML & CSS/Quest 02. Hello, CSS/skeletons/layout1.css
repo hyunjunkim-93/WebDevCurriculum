@@ -21,7 +21,8 @@ aside {
 	background-color: skyblue;
 	/* TODO: 이 곳을 채우세요! */
 	display: inline-block;
-	position: fixed;
-	width: 100%;
+	position: absolute;
+	left: 200px;
+	right: 0;
 	height: 100%;
 }
