@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star</title>
+</head>
+<body>
+
+<script>
+    (function() {
+        let lineNum = prompt('줄 수를 입력해주세요');
+
+        if (lineNum < 0) {
+            lineNum = prompt('줄 수는 양수로 입력해주세요!');
+        }
+
+        for (let i = 0; i < lineNum; i += 1) {
+            const startNum = lineNum - i - 1;
+            const repeatNum = lineNum * 2 - 1;
+            let starAddCnt = i * 2 + 1;
+            let star = '';
+
+            for (let j = 0; j < repeatNum; j += 1) {
+                if (startNum == j) {
+                    while (starAddCnt != 0) {
+                        star += '*';
+                        starAddCnt -= 1;
+                    }
+                } else {
+                    star += ' ';
+                }
+            }
+
+            console.log(star);
+        }
+    }())
+</script>
+</body>
+</html>
+
