@@ -35,6 +35,39 @@
             console.log(star);
         }
     }())
+
+    //
+
+    const lineNum = prompt('줄 수를 입력해주세요');
+    
+    function makeStarMountain(lineNum) {
+        for (let i = 0; i < lineNum; i += 1) {
+            const spaceCnt = lineNum - i - 1;
+            const starCnt = i * 2 + 1;
+            const starLine = makeStarLine(spaceCnt, starCnt);
+        }
+        return result;
+    }
+
+    console.log(starLine);
+
+    function makeStarLine(spaceCnt, starCnt) {
+        let star = ''
+        star += repeatCharacter(' ', spaceCnt);
+        star += repeatCharacter('*', starCnt);
+        star += repeatCharacter(' ', spaceCnt);
+        return star;
+    }
+
+    function repeatCharacter(character, cnt) {
+        let result = '';
+        for (let i = 0; i < cnt; i += 1) {
+            result += character;
+        }
+        return result;
+    }
+
+    makeStarMountain();
 </script>
 </body>
 </html>
