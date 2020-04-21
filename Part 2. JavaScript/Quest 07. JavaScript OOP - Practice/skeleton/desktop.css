@@ -1,1 +1,79 @@
 /* TODO: 자유롭게 바탕화면 시스템의 CSS를 만들어 보세요! */
+/* TODO: 자유롭게 바탕화면 시스템의 CSS를 만들어 보세요! */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.desktop {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(96px, 1fr));
+  background-color: green;
+  padding: 50px;
+}
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.desktop-icon > i {
+  margin-bottom: 5px;
+}
+
+.desktop-icon:hover {
+  cursor: pointer; 
+}
+
+.movable {
+  position: absolute;
+  z-index: 1000;
+}
+
+.window {
+  position: absolute;
+  z-index: 2000;
+  width: 400px;
+  height: 400px;
+  background-color: rgb(238, 238, 238);
+  top: 25%;
+  left: 25%;
+}
+
+.window-header {
+  display: flex;
+  padding: 15px;
+  background-color: rgb(215, 221, 186);
+}
+
+.window-folderWrapper {
+  display: flex;
+  margin-left: auto;
+  align-items: center;
+}
+
+.window-btn--close {
+  background-color: red;
+  width: 20px;
+  height: 20px;
+}
+
+.window-btn--close:hover {
+  background-color: rgb(219, 3, 3);
+  cursor: pointer;
+}
