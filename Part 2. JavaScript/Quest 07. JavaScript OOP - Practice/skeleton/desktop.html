@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="./desktop.css">
-		<link rel='stylesheet' href='https://css.gg/folder.css'>
-		<link rel='stylesheet' href='https://css.gg/games.css'>
-		<script src="./desktop.js"></script>
-	</head>
-	<body>
-		<section class="desktop">
-		</section>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./desktop.css" />
+    <link rel="stylesheet" href="https://css.gg/folder.css" />
+    <link rel="stylesheet" href="https://css.gg/games.css" />
+    <script src="./desktop.js"></script>
+  </head>
+  <body>
+    <section class="desktop"></section>
+    <section class="desktop2"></section>
 
-		<script>
-			let myDesktop = new Desktop(
-				/* TODO: myDesktop 인스턴스의 생성자의 변수로 무엇이 들어가야 할까요? */
-				icon1, folder1, folder2
-				);
-			myDesktop.load();
-		</script>
-	</body>
+    <script>
+      let myDesktop = new Desktop(
+        /* TODO: myDesktop 인스턴스의 생성자의 변수로 무엇이 들어가야 할까요? */
+        {
+          icon1: new Icon(),
+          foldoer1: new Folder(),
+          folder2: new Folder(),
+        },
+        document.querySelector('.desktop')
+      );
+      myDesktop.load();
+    </script>
+  </body>
 </html>
