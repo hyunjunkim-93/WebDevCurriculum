@@ -14,11 +14,15 @@ class Desktop {
       const wrapper = this.makeGrid();
       wrapper.appendChild(iconElement);
 
-      icon.moveEvent(this.#desktopElement);
-      // new DragAndDropEvent(iconElement, this.#desktopElement);
+      new DragAndDropEvent(iconElement, this.#desktopElement);
 
       if (icon instanceof Folder) {
-        icon.dblClickEvent(this.#desktopElement);
+        new windowOpenBridge(
+          iconElement,
+          this.#desktopElement,
+          icon.getElInfo(),
+          'dblclick'
+        );
       }
     });
   }
@@ -69,10 +73,6 @@ class Icon {
   getElement() {
     return this.#element;
   }
-
-  moveEvent(desktopElement) {
-    dragAndDropEvent(this.#element, desktopElement);
-  }
 }
 
 class Folder {
@@ -114,15 +114,8 @@ class Folder {
     return this.#element;
   }
 
-  moveEvent(desktopElement) {
-    dragAndDropEvent(this.#element, desktopElement);
-  }
-
-  dblClickEvent(desktopElement) {
-    this.#element.addEventListener('dblclick', () => {
-      const window = new Window({ name: this.#name, imgSrc: this.#imgSrc });
-      window.open(desktopElement);
-    });
+  getElInfo() {
+    return { name: this.#name, imgSrc: this.#imgSrc };
   }
 }
 
@@ -130,10 +123,13 @@ class Window {
   /* TODO: Window 클래스는 어떤 멤버함수와 멤버변수를 가져야 할까요? */
   #element;
   #folderInfo;
+  #closeBtn;
 
-  constructor(folderInfo) {
+  constructor(folderInfo, desktopElement) {
     this.#folderInfo = folderInfo;
-    this.#element = this.createBase();
+    this.createBase();
+    new DragAndDropEvent(this.#element, desktopElement);
+    this.addCloseEvent();
   }
 
   createBase() {
@@ -158,62 +154,100 @@ class Window {
     wrapper.appendChild(header);
     header.appendChild(closeBtn);
     header.appendChild(folderWrapper);
-    return wrapper;
+
+    this.#element = wrapper;
+    this.#closeBtn = closeBtn;
   }
 
   open(desktopElement) {
     desktopElement.append(this.#element);
-    this.onMoveEvent(desktopElement);
-    this.onCloseEvent();
   }
 
-  onMoveEvent(desktopElement) {
-    dragAndDropEvent(this.#element, desktopElement);
-  }
-  onCloseEvent() {
-    const closeBtn = this.#element.querySelector('.window-btn--close');
-    closeBtn.addEventListener('click', () => {
+  addCloseEvent() {
+    this.#closeBtn.addEventListener('click', () => {
       this.#element.remove();
     });
   }
 }
 
-function dragAndDropEvent(currentElement, bgElement) {
-  currentElement.onmousedown = (event) => {
-    let shiftX = event.clientX - currentElement.getBoundingClientRect().left;
-    let shiftY = event.clientY - currentElement.getBoundingClientRect().top;
+class DragAndDropEvent {
+  #draggableEl;
+  #standardEl;
+  #shiftX;
+  #shiftY;
+  #leftCoordinate;
+  #topCoordinate;
 
-    currentElement.classList.add('movable');
+  constructor(draggableEl, standardEl) {
+    this.#draggableEl = draggableEl;
+    this.#standardEl = standardEl;
+    this.setStyle();
+    this.initHandler();
+    this.addEvents();
+  }
 
-    const moveAt = (pageX, pageY) => {
-      const left = pageX - shiftX;
-      const top = pageY - shiftY;
+  initHandler() {
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
+  }
 
-      if (left < 10 || top < 10) {
-        currentElement.style.left = '25px';
-        currentElement.style.top = '25px';
-        bgElement.removeEventListener('mousemove', onMouseMove);
-      } else {
-        currentElement.style.left = `${left}px`;
-        currentElement.style.top = `${top}px`;
-      }
-    };
+  addEvents() {
+    this.#draggableEl.addEventListener('mousedown', this.onMouseDown);
+    this.#draggableEl.addEventListener('dragstart', (e) => e.preventDefault());
+    this.#draggableEl.addEventListener('mouseup', this.onMouseUp);
+  }
 
-    const onMouseMove = (event) => {
-      moveAt(event.pageX, event.pageY);
-    };
+  onMouseDown(e) {
+    this.setShift(e.clientX, e.clientY);
+    this.moveAt(e.pageX, e.pageY);
+    this.#standardEl.addEventListener('mousemove', this.onMouseMove);
+  }
 
-    moveAt(event.pageX, event.pageY);
+  onMouseMove(e) {
+    this.moveAt(e.pageX, e.pageY);
+  }
 
-    bgElement.addEventListener('mousemove', onMouseMove);
+  onMouseUp() {
+    this.#standardEl.removeEventListener('mousemove', this.onMouseMove);
+  }
 
-    currentElement.onmouseup = () => {
-      bgElement.removeEventListener('mousemove', onMouseMove);
-      currentElement.onmouseup = null;
-    };
-  };
+  setShift(clientX, clientY) {
+    const rect = this.#draggableEl.getBoundingClientRect();
+    this.#shiftX = clientX - rect.left;
+    this.#shiftY = clientY - rect.top;
+  }
 
-  currentElement.ondragStart = () => {
-    return false;
-  };
+  moveAt(pageX, pageY) {
+    this.#leftCoordinate = pageX - this.#shiftX;
+    this.#topCoordinate = pageY - this.#shiftY;
+    this.#draggableEl.style.left = `${this.#leftCoordinate}px`;
+    this.#draggableEl.style.top = `${this.#topCoordinate}px`;
+  }
+
+  setStyle() {
+    this.#draggableEl.classList.add('movable');
+  }
+}
+
+class windowOpenBridge {
+  #targetEl;
+  #targetElInfo;
+  #desktopElement;
+  #clickType;
+
+  constructor(targetEl, desktopElement, targetElInfo, clickType) {
+    this.#targetEl = targetEl;
+    this.#targetElInfo = targetElInfo;
+    this.#desktopElement = desktopElement;
+    this.#clickType = clickType;
+    this.bridge();
+  }
+
+  bridge() {
+    this.#targetEl.addEventListener(this.#clickType, () => {
+      const window = new Window(this.#targetElInfo, this.#desktopElement);
+      window.open(this.#desktopElement);
+    });
+  }
 }
