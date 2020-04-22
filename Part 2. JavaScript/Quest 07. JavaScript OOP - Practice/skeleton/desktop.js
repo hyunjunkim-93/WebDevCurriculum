@@ -17,7 +17,7 @@ class Desktop {
       new DragAndDropEvent(iconElement, this.#desktopElement);
 
       if (icon instanceof Folder) {
-        new windowOpenBridge(
+        new WindowOpenBridge(
           iconElement,
           this.#desktopElement,
           icon.getElInfo(),
@@ -230,7 +230,7 @@ class DragAndDropEvent {
   }
 }
 
-class windowOpenBridge {
+class WindowOpenBridge {
   #targetEl;
   #targetElInfo;
   #desktopElement;
