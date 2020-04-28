@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&display=swap">
+    <link rel="stylesheet" href="./quest.css">
+    <title>Puzzle Game</title>
+  </head>
+  <body>
+    <section class="game-section">
+      <main class="game-view">
+        <h1 class="game-title">15-PUZZLE</h1>
+        <span class="record-time--current">게임 기록</span>
+        <ul class="game-cards"></ul>
+        <div class="game-btns">
+          <button class="game-btns--start">START</button>
+          <button class="game-btns--solve">SOLVE</button>
+          <button class="game-btns--scramble">SCRAMBLE</button>
+        </div>
+      </main>
+      <aside class="game-record">
+        <h2 class="record-title">게임 기록</h2>
+        <ul class="record-list"></ul>
+        <button class="record-btns--clear">기록 지우기</button>
+      </aside>
+    </section>
+    <script src="quest.js" type="module"></script>
+  </body>
+</html>
