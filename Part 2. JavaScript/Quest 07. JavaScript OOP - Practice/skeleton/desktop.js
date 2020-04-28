@@ -8,30 +8,11 @@ class Desktop {
     this.#desktopElement = desktopElement;
   }
 
-  load() {
+  render() {
     this.#icons.map((icon) => {
       const iconElement = icon.getElement();
-      const wrapper = this.makeGrid();
-      wrapper.appendChild(iconElement);
-
-      new DragAndDropEvent(iconElement, this.#desktopElement);
-
-      if (icon instanceof Folder) {
-        new WindowOpenBridge(
-          iconElement,
-          this.#desktopElement,
-          icon.getElInfo(),
-          'dblclick'
-        );
-      }
+      this.#desktopElement.appendChild(iconElement);
     });
-  }
-
-  makeGrid() {
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('icon-wrapper');
-    this.#desktopElement.appendChild(wrapper);
-    return wrapper;
   }
 }
 
@@ -48,30 +29,20 @@ class Icon {
     this.#imgSrc = imgSrc || 'gg-games';
     this.#width = width || '48';
     this.#height = height || '48';
-    this.#element = this.initElements();
+    this.#element = this.createBase();
+    this.addEvents();
   }
 
   createBase() {
-    const el = document.createElement('div');
-    const icon = document.createElement('i');
-    const title = document.createElement('h3');
-
-    title.innerText = this.#name;
-    el.classList.add('desktop-icon');
-    el.appendChild(icon);
-    el.appendChild(title);
-
-    return { el, icon };
-  }
-
-  initElements() {
-    const { el, icon } = this.createBase();
-    icon.classList.add(this.#imgSrc);
-    return el;
+    return CreateMethods.createFolderBase(this.#imgSrc, this.#name);
   }
 
   getElement() {
     return this.#element;
+  }
+
+  addEvents() {
+    new DragAndDropEvent(this.#element.children[0]);
   }
 }
 
@@ -88,26 +59,12 @@ class Folder {
     this.#imgSrc = imgSrc || 'gg-folder';
     this.#width = width || '48';
     this.#height = height || '48';
-    this.#element = this.initElements();
+    this.#element = this.createBase();
+    this.addEvents();
   }
 
   createBase() {
-    const el = document.createElement('div');
-    const icon = document.createElement('i');
-    const title = document.createElement('h3');
-
-    title.innerText = this.#name;
-    el.classList.add('desktop-icon');
-    el.appendChild(icon);
-    el.appendChild(title);
-
-    return { el, icon };
-  }
-
-  initElements() {
-    const { el, icon } = this.createBase();
-    icon.classList.add(this.#imgSrc);
-    return el;
+    return CreateMethods.createFolderBase(this.#imgSrc, this.#name);
   }
 
   getElement() {
@@ -117,6 +74,13 @@ class Folder {
   getElInfo() {
     return { name: this.#name, imgSrc: this.#imgSrc };
   }
+
+  addEvents() {
+    new DragAndDropEvent(this.#element.children[0]);
+    this.#element.addEventListener('dblclick', () => {
+      new WindowOpenBridge(this.#element, this.getElInfo());
+    })
+  }
 }
 
 class Window {
@@ -125,62 +89,44 @@ class Window {
   #folderInfo;
   #closeBtn;
 
-  constructor(folderInfo, desktopElement) {
+  constructor(folderEl, folderInfo) {
     this.#folderInfo = folderInfo;
     this.createBase();
-    new DragAndDropEvent(this.#element, desktopElement);
-    this.addCloseEvent();
+    this.addEvents();
+    this.open(folderEl);
   }
 
   createBase() {
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('window');
+    const templateWindow = document.querySelector('#template-window-wrapper').content.cloneNode(true);
+    const folderWrapper = templateWindow.querySelector('.window-folder-wrapper').children;
+    folderWrapper[0].classList.add(this.#folderInfo.imgSrc);
+    folderWrapper[1].innerText = this.#folderInfo.title;
 
-    const header = document.createElement('header');
-    header.classList.add('window-header');
-
-    const folderWrapper = document.createElement('div');
-    const folderIcon = document.createElement('i');
-    const folderTitle = document.createElement('h3');
-    folderWrapper.classList.add('window-folder-wrapper');
-    folderIcon.classList.add(this.#folderInfo.imgSrc);
-    folderTitle.innerText = this.#folderInfo.title;
-    folderWrapper.appendChild(folderIcon);
-    folderWrapper.appendChild(folderTitle);
-
-    const closeBtn = document.createElement('button');
-    closeBtn.classList.add('window-btn--close');
-
-    wrapper.appendChild(header);
-    header.appendChild(closeBtn);
-    header.appendChild(folderWrapper);
-
-    this.#element = wrapper;
-    this.#closeBtn = closeBtn;
+    this.#element = templateWindow.querySelector('.window');
+    this.#closeBtn = templateWindow.querySelector('.window-btn--close');
   }
 
-  open(desktopElement) {
-    desktopElement.append(this.#element);
+  open(folderEl) {
+    folderEl.append(this.#element);
   }
 
-  addCloseEvent() {
+  addEvents() {
     this.#closeBtn.addEventListener('click', () => {
       this.#element.remove();
     });
+    new DragAndDropEvent(this.#element);
   }
 }
 
 class DragAndDropEvent {
   #draggableEl;
-  #standardEl;
   #shiftX;
   #shiftY;
   #leftCoordinate;
   #topCoordinate;
 
-  constructor(draggableEl, standardEl) {
+  constructor(draggableEl) {
     this.#draggableEl = draggableEl;
-    this.#standardEl = standardEl;
     this.setStyle();
     this.initHandler();
     this.addEvents();
@@ -201,7 +147,7 @@ class DragAndDropEvent {
   onMouseDown(e) {
     this.setShift(e.clientX, e.clientY);
     this.moveAt(e.pageX, e.pageY);
-    this.#standardEl.addEventListener('mousemove', this.onMouseMove);
+    document.body.addEventListener('mousemove', this.onMouseMove);
   }
 
   onMouseMove(e) {
@@ -209,7 +155,7 @@ class DragAndDropEvent {
   }
 
   onMouseUp() {
-    this.#standardEl.removeEventListener('mousemove', this.onMouseMove);
+    document.body.removeEventListener('mousemove', this.onMouseMove);
   }
 
   setShift(clientX, clientY) {
@@ -231,23 +177,22 @@ class DragAndDropEvent {
 }
 
 class WindowOpenBridge {
-  #targetEl;
-  #targetElInfo;
-  #desktopElement;
-  #clickType;
-
-  constructor(targetEl, desktopElement, targetElInfo, clickType) {
-    this.#targetEl = targetEl;
-    this.#targetElInfo = targetElInfo;
-    this.#desktopElement = desktopElement;
-    this.#clickType = clickType;
-    this.bridge();
+  constructor(targetEl, targetElInfo) {
+    this.bridge(targetEl, targetElInfo);
   }
 
-  bridge() {
-    this.#targetEl.addEventListener(this.#clickType, () => {
-      const window = new Window(this.#targetElInfo, this.#desktopElement);
-      window.open(this.#desktopElement);
-    });
+  bridge(targetEl, targetElInfo) {
+    new Window(targetEl, targetElInfo);
+  }
+}
+
+class CreateMethods {
+  static createFolderBase(imgSrc, title) {
+    const templateFolder = document.querySelector('#template-folder').content.cloneNode(true);
+    const iconWrapper = templateFolder.querySelector('.icon-wrapper');
+    const icon = templateFolder.querySelector('.desktop-icon');
+    icon.children[0].classList.add(imgSrc);
+    icon.children[1].innerText = title;
+    return iconWrapper;
   }
 }

@@ -9,7 +9,27 @@
   </head>
   <body>
     <section class="desktop"></section>
-    <section class="desktop2"></section>
+
+    <template id="template-window-wrapper">
+      <div class="window">
+        <header class="window-header">
+          <button class="window-btn--close"></button>
+          <div class="window-folder-wrapper">
+            <i></i>
+            <h3></h3>
+          </div>
+        </header>
+      </div>
+    </template>
+
+    <template id="template-folder">
+      <div class="icon-wrapper">
+        <div class="desktop-icon">
+          <i></i>
+          <h3></h3>
+        </div>
+      </div>
+    </template>
 
     <script>
       let myDesktop = new Desktop(
@@ -21,7 +41,7 @@
         },
         document.querySelector('.desktop')
       );
-      myDesktop.load();
+      myDesktop.render();
     </script>
   </body>
 </html>
