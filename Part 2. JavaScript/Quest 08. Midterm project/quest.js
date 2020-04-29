@@ -18,6 +18,13 @@ class PubSubFrame {
 }
 const PubSub = new PubSubFrame();
 
+class Utils {
+  static also(v, block) {
+    block(v);
+    return v;
+  }
+}
+
 class PuzzleGame {
   #cards = [];
   #parentNode;
@@ -43,14 +50,13 @@ class PuzzleGame {
       const cardArr = [];
 
       for (let j = 0; j < length; j += 1) {
-        cardArr.push(num);
+        cardArr.push(String(num));
         num += 1;
         if (num == 16) {
           cardArr.push('empty');
           break;
         }
       }
-
       arr.push(cardArr);
     }
     return arr;
@@ -59,33 +65,31 @@ class PuzzleGame {
   render(cards) {
     cards.forEach((rowsCards, columnNum) => {
       rowsCards.forEach((value, rowNum) => {
-        const card = document.createElement('li');
-        card.id = `card-${columnNum}-${rowNum}`;
-        this.setStyle(card);
-        this.setCardPosition(card, { columnNum, rowNum });
-        this.setCardContent(card, value);
+        const card = Utils.also(document.createElement('li'), it => {
+          it.id = `card-${columnNum}-${rowNum}`;
+          this.setStyle(it);
+          this.setCardPosition(it, { columnNum, rowNum });
+          this.setCardContent(it, value);
+        })
         this.#parentNode.appendChild(card);
       });
     });
   }
 
-  // TODO
   setStyle(card) {
     card.classList.add('game-card');
-    const indexArr = card.id.split('-').splice(1, 2);
-    if (indexArr[0] % 2 == 0 && indexArr[1] % 2 == 1) {
+    const indexArr = this.exportCardIndex(card);
+    const case1 = indexArr[0] % 2 == 0 && indexArr[1] % 2 == 0;
+    const case2 = indexArr[0] % 2 == 1 && indexArr[1] % 2 == 1;
+    const case3 = card.id === 'card-3-3'
+
+    if (case1 || case2) {
+      card.classList.add('game-card--deep');
+    } else {
       card.classList.add('game-card--light');
     }
-    if (indexArr[0] % 2 == 1 && indexArr[1] % 2 == 0) {
-      card.classList.add('game-card--light');
-    }
-    if (indexArr[0] % 2 == 0 && indexArr[1] % 2 == 0) {
-      card.classList.add('game-card--deep');
-    }
-    if (indexArr[0] % 2 == 1 && indexArr[1] % 2 == 1) {
-      card.classList.add('game-card--deep');
-    }
-    if (card.id == 'card-3-3') {
+    if (case3) {
+      card.classList.remove('game-card--deep');
       card.classList.add('game-card--empty');
     }
   }
@@ -110,7 +114,7 @@ class PuzzleGame {
 
   onCardSwap(cardEl) {
     cardEl.addEventListener('click', e => {
-      const targetIndexArr = e.target.id.split('-').splice(1, 2);
+      const targetIndexArr = this.exportCardIndex(e.target.id);
       const { emptyEl, emptyIndexArr } = this.findEmptyInfo();
       if (this.isAroundEmpty(targetIndexArr, emptyIndexArr)) {
         this.changeNode(emptyEl, e.target);
@@ -120,25 +124,31 @@ class PuzzleGame {
     })
   }
 
-  // TODO
   onAnswerCheck(cardEl) {
     cardEl.addEventListener('click', () => {
-      let answerCnt = 0;
-      this.#cards.forEach((rowsCards, columnNum) => {
-        if (answerCnt > 1) return;
-        rowsCards.forEach((_, rowNum) => {
-          const el = document.querySelector(`#card-${columnNum}-${rowNum}`);
-          if (this.#cards[columnNum][rowNum] != Number(el.innerHTML)) {
-            answerCnt += 1;
-          }
-        });
-      });
-      if (answerCnt == 1 && this.#isStart) {
-        PubSub.publish('game_stop');
-        this.#isStart = false;
-        alert('게임 종료');
+      const elList = this.#parentNode.children;
+      let result = true;
+
+      for (const el of elList) {
+        const index = this.exportCardIndex(el);
+        const originValue = this.#cards[index[0]][index[1]];
+        const actualValue = el.innerHTML;
+        
+        if (originValue !== actualValue) {
+          result = false;
+          return;
+        }
       }
+      this.stopGame(result);
     })
+  }
+
+  stopGame(result) {
+    if (result && this.#isStart) {
+      PubSub.publish('game_stop');
+      this.#isStart = false;
+      alert('게임 종료');
+    }
   }
 
   findEmptyInfo() {
@@ -147,14 +157,16 @@ class PuzzleGame {
     for (const cardEl of this.#parentNode.children) {
       if (cardEl.innerHTML == 'empty') {
         emptyEl = cardEl;
-        emptyIndexArr = cardEl.id.split('-').splice(1, 2);
+        emptyIndexArr = this.exportCardIndex(cardEl);
       }
     }
     return { emptyEl, emptyIndexArr };
   }
 
   isAroundEmpty(targetIndex, emptyIndex) {
-    const result = Math.abs(targetIndex[0] - emptyIndex[0]) + Math.abs(targetIndex[1] - emptyIndex[1]);
+    const firstAbs = Math.abs(targetIndex[0] - emptyIndex[0]);
+    const secondAbs = Math.abs(targetIndex[1] - emptyIndex[1]);
+    const result = firstAbs + secondAbs;
     return result == 1 ? true : false;
   }
 
@@ -183,8 +195,11 @@ class PuzzleGame {
       currentIndex -= 1;
       currentIndex2 -= 1;
 
-      const currentEl = document.querySelector(`#card-${currentIndex}-${currentIndex2}`);
-      const randomEl = document.querySelector(`#card-${randomIndex}-${randomIndex2}`);
+      const currentCardId = `#card-${currentIndex}-${currentIndex2}`;
+      const randomCardId = `#card-${randomIndex}-${randomIndex2}`;
+
+      const currentEl = document.querySelector(currentCardId);
+      const randomEl = document.querySelector(randomCardId);
 
       this.changeNode(currentEl, randomEl);
     }
@@ -194,6 +209,10 @@ class PuzzleGame {
     while (this.#parentNode.firstChild) {
       this.#parentNode.removeChild(this.#parentNode.firstChild);
     }
+  }
+
+  exportCardIndex(el) {
+    return el.id.split('-').splice(1, 2);
   }
 
   subscribeOptions() {
@@ -299,9 +318,10 @@ class GameRecord {
   }
 
   renderRecord() {
-    const timeRecordEl = document.createElement('li');
     const index = this.#timeRecordList.length - 1;
-    timeRecordEl.innerHTML = `${index + 1}번 째 기록: ${this.#timeRecordList[index]}`;
+    const timeRecordEl = Utils.also(document.createElement('li'), it => {
+      it.innerHTML = `${index + 1}번 째 기록: ${this.#timeRecordList[index]}`;
+    })
     this.#recordListEl.appendChild(timeRecordEl);
   }
 
