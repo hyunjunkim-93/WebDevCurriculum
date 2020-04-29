@@ -81,7 +81,7 @@ class PuzzleGame {
     const indexArr = this.exportCardIndex(card);
     const case1 = indexArr[0] % 2 == 0 && indexArr[1] % 2 == 0;
     const case2 = indexArr[0] % 2 == 1 && indexArr[1] % 2 == 1;
-    const case3 = card.id === 'card-3-3'
+    const case3 = card.id === 'card-3-3';
 
     if (case1 || case2) {
       card.classList.add('game-card--deep');
@@ -102,7 +102,7 @@ class PuzzleGame {
     const top = (target.columnNum * 80 + 1) + (target.columnNum * 1);
     const left = (target.rowNum * 80 + 1) + (target.rowNum * 1);
     card.style.top = `${top}px`;
-    card.style.left = `${left}px`
+    card.style.left = `${left}px`;
   }
 
   addEvent() {
@@ -282,7 +282,7 @@ class GameRecord {
       this.#seconds = 0;
       this.#minutes += 1;
     }
-    this.#currentTimeEl.innerHTML = `${this.#minutes}m ${this.#seconds}s`
+    this.#currentTimeEl.innerHTML = `${this.#minutes}m ${this.#seconds}s`;
   }
 
   subscribeOptions() {
@@ -293,7 +293,7 @@ class GameRecord {
     })
     PubSub.subscribe('game_stop', () => {
       clearInterval(this.#interval);
-      const record = this.#currentTimeEl.innerHTML
+      const record = this.#currentTimeEl.innerHTML;
       this.saveRecord(record);
       this.#timeRecordList.push(record);
       this.renderRecord();
