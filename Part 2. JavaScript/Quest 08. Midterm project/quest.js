@@ -114,7 +114,7 @@ class PuzzleGame {
 
   onCardSwap(cardEl) {
     cardEl.addEventListener('click', e => {
-      const targetIndexArr = this.exportCardIndex(e.target.id);
+      const targetIndexArr = this.exportCardIndex(e.target);
       const { emptyEl, emptyIndexArr } = this.findEmptyInfo();
       if (this.isAroundEmpty(targetIndexArr, emptyIndexArr)) {
         this.changeNode(emptyEl, e.target);
