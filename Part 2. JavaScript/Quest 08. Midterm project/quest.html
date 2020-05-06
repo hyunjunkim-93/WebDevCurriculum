@@ -26,6 +26,19 @@
         <button class="record-btns--clear">기록 지우기</button>
       </aside>
     </section>
-    <script src="quest.js" type="module"></script>
+    <script src="./quest/util.js"></script>
+    <script src="./quest/model.js"></script>
+    <script src="./quest/view.js"></script>
+    <script src="./quest/presenter.js"></script>
+    <script>
+      const PubSub = new PubSubFrame();
+      const card = new Card();
+      const game = new Game();
+      const viewGame = new ViewGame(card.all);
+      const record = new Record();
+      const viewRecord = new ViewRecord(record.list);
+      const recordPresenter = new RecordPresenter(record, viewRecord);
+      const gamePresenter = new GamePresenter(card, viewGame);
+    </script>
   </body>
 </html>
