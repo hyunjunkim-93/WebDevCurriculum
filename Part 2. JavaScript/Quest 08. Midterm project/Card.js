@@ -164,7 +164,7 @@ class ViewCard {
 		})
 	}
 
-	sort (defaultCards) {
+	sort(defaultCards) {
 		defaultCards.flat(2).forEach((card, i) => {
 			const currentCardEl = this.cardEls[i];
 			currentCardEl.innerHTML = card.value;
