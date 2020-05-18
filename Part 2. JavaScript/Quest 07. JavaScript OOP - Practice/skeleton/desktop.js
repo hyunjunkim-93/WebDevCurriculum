@@ -34,7 +34,7 @@ class Icon {
   }
 
   createBase() {
-    return CreateMethods.createFolderBase(this.#imgSrc, this.#name);
+    return ElementBaseFactory.createFolderBase(this.#imgSrc, this.#name);
   }
 
   getElement() {
@@ -64,7 +64,7 @@ class Folder {
   }
 
   createBase() {
-    return CreateMethods.createFolderBase(this.#imgSrc, this.#name);
+    return ElementBaseFactory.createFolderBase(this.#imgSrc, this.#name);
   }
 
   getElement() {
@@ -99,8 +99,10 @@ class Window {
   createBase() {
     const templateWindow = document.querySelector('#template-window-wrapper').content.cloneNode(true);
     const folderWrapper = templateWindow.querySelector('.window-folder-wrapper').children;
-    folderWrapper[0].classList.add(this.#folderInfo.imgSrc);
-    folderWrapper[1].innerText = this.#folderInfo.title;
+    const iconImg = folderWrapper.querySelector('.icon-img')
+    const iconTitle = folderWrapper.querySelector('.icon-title')
+    iconImg.classList.add(this.#folderInfo.imgSrc);
+    iconTitle.innerText = this.#folderInfo.title;
 
     this.#element = templateWindow.querySelector('.window');
     this.#closeBtn = templateWindow.querySelector('.window-btn--close');
@@ -186,13 +188,15 @@ class WindowOpenBridge {
   }
 }
 
-class CreateMethods {
+class ElementBaseFactory {
   static createFolderBase(imgSrc, title) {
     const templateFolder = document.querySelector('#template-folder').content.cloneNode(true);
     const iconWrapper = templateFolder.querySelector('.icon-wrapper');
     const icon = templateFolder.querySelector('.desktop-icon');
-    icon.children[0].classList.add(imgSrc);
-    icon.children[1].innerText = title;
+    const iconImg = icon.querySelector('.icon-img');
+    const iconTitle = icon.querySelector('.icon-title');
+    iconImg.classList.add(imgSrc);
+    iconTitle.innerText = title;
     return iconWrapper;
   }
 }
