@@ -2,13 +2,44 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="/style.css">
-		<script src="/notepad.js"></script>
+		<link rel="stylesheet" href="./style.css">
+		<script src="./notepad.js"></script>
+		<link rel="stylesheet" href="style.css">
 	</head>
 	<body>
 		<!-- TODO: 이 곳을 채워 클라이언트를 만들어 보세요 -->
+		<main class="notepad-main">
+			<aside class="notepad-aside">
+				<ul class="notepad-list">
+          <li class="notepad-btns">
+            <button class="notepad-btn--delete">삭제하기</button>
+            <button class="notepad-btn--new">추가하기</button>
+          </li>
+
+            <template id="template-notepad-list">
+              <li class="notepad-li">
+                <a class="notepad-link" tabindex="0">
+                  <h3 class="li-title"></h3>
+                  <div class="li-date"></div>
+                </a>
+              </li>
+            </template>
+				</ul>
+			</aside>
+			<section class="notepad-content">
+        <div class="notepad-date"></div>
+        <div class="notepad-text">
+          <textarea class="notepad-title" placeholder="Title"></textarea>
+          <textarea class="notepad-description" placeholder="Content"></textarea>
+        </div>
+			</section>
+    </main>
+
 		<script>
-			let notepad = new Notepad();
+      window.addEventListener('DOMContentLoaded', () => {
+        let notepad = new Notepad();
+        let viewNotepad = new ViewNotepad(notepad);
+      })
 		</script>
 	</body>
 </html>
