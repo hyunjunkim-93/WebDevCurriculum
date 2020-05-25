@@ -1,0 +1,17 @@
+{
+    "user1": {
+        "id": "test1",
+        "pw": "123",
+        "nickname": "Jun Resig"
+    },
+    "user2": {
+        "id": "test2",
+        "pw": "123456",
+        "nickname": "Mark Junkerberg"
+    },
+    "user3": {
+        "id": "test3",
+        "pw": "123456789",
+        "nickname": "Junus Torvalds"
+    }
+}
