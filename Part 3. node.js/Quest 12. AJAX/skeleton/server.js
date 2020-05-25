@@ -29,21 +29,25 @@ app.get('/', (req, res) => {
 /* TODO: 여기에 처리해야 할 요청의 주소별로 동작을 채워넣어 보세요..! */
 // GET 요청을 받으면 폴더의 파일에 대한 데이터를 반환해준다
 app.get('/api/notepad', (req, res) => {
-	let result;
 	try {
     const files = fs.readdirSync('./notepad')
-		result = files.reduce((acc, curr) => {
-      const data = fs.readFileSync(`./notepad/${curr}`).toString()
-      const created = curr.split('.')[0]
-			const { title, description, modified } = JSON.parse(data)
-			const el = { created, title, description, modified }
-			acc.push(el)
-			return acc
-    }, [])
-    res.end(JSON.stringify(result))
+    if (files.length == 0) {
+      res.end(JSON.stringify({ ok: 0, msg: 'The file was not found!'}))
+    } else {
+      const result = files.reduce((acc, curr) => {
+        const data = fs.readFileSync(`./notepad/${curr}`).toString()
+        const created = curr.split('.')[0]
+        const { title, description, modified } = JSON.parse(data)
+        const el = { created, title, description, modified }
+        acc.push(el)
+        return acc
+      }, [])
+      res.end(JSON.stringify({ ok: 1, item: result }))
+    }
 	} catch (err) {
 		if (err.code === 'ENOENT') {
-			console.error('Files were not founded!')
+      res.end(JSON.stringify({ ok: 0, msg: 'The folder was not found!' }))
+			console.error('The folder were not found!')
 		} else {
 			throw err
     }
@@ -63,7 +67,7 @@ app.post('/api/notepad', (req, res) => {
         if (err) throw err
       })
     } else {
-      console.error('Unknown Error!')
+      console.error(err)
     }
   }
 })
@@ -79,16 +83,15 @@ app.put(`/api/notepad`, (req, res) => {
     const writeStream = fs.createWriteStream(`./notepad/${created}.txt`)
     readStream.pipe(writeStream)
     writeStream.on('finish', () => {
-      console.log('파일 쓰기 완료')
+      console.log('노트 업데이트 완료')
     })
     writeStream.write(data)
     writeStream.end()
-    res.end({ title, description, modified })
   } catch (err) {
     if (err.code === 'ENOENT') {
       console.error('No File!')
     } else {
-      console.error('Unknown Error!')
+      console.error(err)
     }
   }
 })
@@ -108,7 +111,7 @@ app.delete(`/api/notepad`, (req, res) => {
     if (err.code === 'ENOENT') {
       console.error('No File!')
     } else {
-      console.error('Unknown Error!')
+      console.error(err)
     }
   }
 })

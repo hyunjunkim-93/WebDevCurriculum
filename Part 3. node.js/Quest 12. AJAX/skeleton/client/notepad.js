@@ -4,29 +4,23 @@ class Notepad {
   #targetIndex
 
 	/* TODO: 그 외에 또 어떤 클래스와 메소드가 정의되어야 할까요? */
-  constructor() {
-  }
-
   get notes() {
     return this.#notes
   }
-
   get currentNote() {
     return this.#currentNote
   }
-
   set notes(data) {
     this.#notes.push(data)
   }
-
   set currentNote(data) {
     this.#currentNote = data
   }
-  
-  addNote(emptyNote) {
-    this.#currentNote = emptyNote
-    this.#notes.unshift(emptyNote)
-    this.addNoteAPI(emptyNote)
+
+  addNote(note) {
+    this.#currentNote = note
+    this.#notes.unshift(note)
+    this.addNoteAPI(note)
   }
 
   checkUpdateCondition() {
@@ -44,7 +38,7 @@ class Notepad {
     this.#notes[this.#targetIndex] = this.#currentNote
     this.sortNotes()
   }
-  
+
   findTargetIndex(target) {
     const targetNoteIndex = this.#notes.findIndex(el => {
       return el.created === target
@@ -56,8 +50,12 @@ class Notepad {
     return fetch('http://localhost:8080/api/notepad')
       .then(res => res.json())
       .then(data => {
-        this.#notes = data
-        this.sortNotes()
+        if (data.ok) {
+          this.#notes = data.item
+          this.sortNotes()
+        } else {
+          console.log(data.msg)
+        }
       })
   }
 
@@ -109,7 +107,6 @@ class Notepad {
       = new Intl.DateTimeFormat
         ('en',
         { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: 'numeric' })
-    
     const [
       { value: month },,{ value: day },,{ value: year },,{ value: hour },,{ value: minute },,{ value: second }
     ] = dateTimeFormat.formatToParts(date)
@@ -170,15 +167,11 @@ class ViewNotepad {
   updateView() {
     this.#notepadList.removeChild(this.#currentEl)
     const { li, title, date } = this.cloneLiTemplate()
-    this.setNoteLiContent(this.#notepad.notes[0], title, date)
-    this.addNoteLoadEvent(li, this.#notepad.notes[0])
-    this.#notepadList.insertBefore(li, this.#notepadList.children[2])
-  }
-
-  addEvents() {
-    this.addNoteUpdateEvent()
-    this.addNewNoteEvent()
-    this.deleteNoteEvent()
+    const modifiedNote = this.#notepad.notes[0]
+    const firstNoteEl = this.#notepadList.children[2]
+    this.setNoteLiContent(modifiedNote, title, date)
+    this.addNoteLoadEvent(li, modifiedNote)
+    this.#notepadList.insertBefore(li, firstNoteEl)
   }
 
   setNoteLi(note) {
@@ -186,21 +179,6 @@ class ViewNotepad {
     this.setNoteLiContent(note, title, date)
     this.appendNoteLi(li)
     this.addNoteLoadEvent(li, note)
-  }
-
-  addEmptyNote() {
-    const emptyNote = this.#notepad.getEmptyNote()
-    this.#notepad.addNote(emptyNote)
-    this.setNoteLi(emptyNote)
-    this.focusRecentNote()
-  }
-
-  cloneLiTemplate() {
-    const template = document.querySelector('#template-notepad-list').content.cloneNode(true)
-    const li = template.querySelector('.notepad-li')
-    const title = li.querySelector('.li-title')
-    const date = li.querySelector('.li-date')
-    return { li, title, date }
   }
 
   setNoteLiContent(note, title, date) {
@@ -222,7 +200,28 @@ class ViewNotepad {
       this.#currentEl = e.currentTarget
     })
   }
-  
+
+  addEvents() {
+    this.addNoteUpdateEvent()
+    this.addNewNoteEvent()
+    this.deleteNoteEvent()
+  }
+
+  addEmptyNote() {
+    const emptyNote = this.#notepad.getEmptyNote()
+    this.#notepad.addNote(emptyNote)
+    this.setNoteLi(emptyNote)
+    this.focusRecentNote()
+  }
+
+  cloneLiTemplate() {
+    const template = document.querySelector('#template-notepad-list').content.cloneNode(true)
+    const li = template.querySelector('.notepad-li')
+    const title = li.querySelector('.li-title')
+    const date = li.querySelector('.li-date')
+    return { li, title, date }
+  }
+
   addNoteUpdateEvent() {
     this.#aside.addEventListener('click', () => {
       const data = {
