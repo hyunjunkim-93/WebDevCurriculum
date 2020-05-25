@@ -2,13 +2,51 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="/style.css">
-		<script src="/notepad.js"></script>
+		<link rel="stylesheet" href="./style.css">
+		<script type="module" src="./app.mjs"></script>
 	</head>
 	<body>
-		<!-- TODO: 이 곳을 채워 클라이언트를 만들어 보세요 -->
-		<script>
-			let notepad = new Notepad();
-		</script>
+    <!-- TODO: 이 곳을 채워 클라이언트를 만들어 보세요 -->
+        <header class="notepad-header">
+        <div class="logout-view">
+            <input class="notepad-id" type="text">
+            <input class="notepad-pw" type="password">
+            <button class="notepad-btn--login">로그인</button>
+        </div>
+        <div class="login-view">
+            <h3 class="notepad-nickname"></h3>
+            <button class="notepad-btn--logout">로그아웃</button>
+        </div>
+        </header>
+        <main class="notepad-main">
+                <aside class="notepad-aside">
+                    <ul class="notepad-list">
+            <li class="notepad-btns">
+                <button class="notepad-btn--delete">삭제하기</button>
+                <button class="notepad-btn--add">추가하기</button>
+            </li>
+            <ul class="note-ul">
+            </ul>
+
+                <template id="template-note-li">
+                <li class="note-li">
+                    <a class="note-link" tabindex="0">
+                    <h3 class="note-title"></h3>
+                    <div class="note-date"></div>
+                    </a>
+                </li>
+                </template>
+                    </ul>
+                </aside>
+                <section class="notepad-content">
+            <div class="notepad-date"></div>
+            <div class="notepad-text">
+            <h2>
+                <textarea class="notepad-title" placeholder="Title"></textarea>
+            </h2>
+            <textarea class="notepad-description" placeholder="Content"></textarea>
+            </div>
+                </section>
+        </main>
 	</body>
 </html>
