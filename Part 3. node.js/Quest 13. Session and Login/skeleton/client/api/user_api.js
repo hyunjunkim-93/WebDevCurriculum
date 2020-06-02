@@ -2,7 +2,7 @@ import base from './index_api.js';
 
 export default {
     getLoginInfo() {
-        return base('GET', '/login')
+        return base('GET', '/user/loginInfo')
             .then(data => data)
             .catch(err => {
                 console.error(err);
@@ -10,7 +10,7 @@ export default {
     },
 
     login(loginInfo) {
-        return base('POST', '/login', loginInfo)
+        return base('POST', '/user/login', loginInfo)
             .then(data => data)
             .catch(err => {
                 console.error(err);
@@ -18,7 +18,7 @@ export default {
     },
 
     logout() {
-        return base('GET', '/logout')
+        return base('GET', '/user/logout')
             .then(data => data)
             .catch(err => {
                 console.error(err);
@@ -26,7 +26,7 @@ export default {
     },
 
     getCurrentTab() {
-        return base('GET', '/tab')
+        return base('GET', '/user/tab')
             .then(data => data)
             .catch(err => {
                 console.error(err);
@@ -34,7 +34,7 @@ export default {
     },
 
     setCurrentTab(tabInfo) {
-        return base('POST', '/tab', tabInfo)
+        return base('POST', '/user/tab', tabInfo)
             .then(data => data)
             .catch(err => {
                 console.error(err);
