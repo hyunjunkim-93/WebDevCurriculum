@@ -1,0 +1,111 @@
+* {
+	/* TODO: 필요한 CSS를 채워넣어 보세요! */
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+}
+
+textarea {
+    resize: none;
+    outline: none;
+    border: none;
+    padding: 0;
+}
+
+ul li {
+    margin:0;
+    padding: 0;
+    text-indent: 0;
+    list-style-type: none;
+}
+
+h2, h3 {
+    margin: 0;
+}
+
+.notepad-main {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+}
+
+.notepad-aside {
+    min-width: 230px;
+    background-color: #FFFFFF;
+    background-image: linear-gradient(180deg, #FFFFFF 0%, #fdfdfd 50%, #fdfdfd 100%);  
+    -moz-box-shadow:    3px 3px 5px 6px rgb(236, 236, 236);
+    -webkit-box-shadow: 3px 3px 5px 6px rgb(2, 2, 2);
+    box-shadow:         3px 3px 5px 6px rgb(245, 245, 245);
+}
+
+.notepad-li {
+    margin: 20px 0;
+    border-bottom: 1px solid rgb(128, 128, 128);
+}
+
+.notepad-btns {
+    margin: 30px 0 40px 0;
+}
+
+.notepad-content {
+    display: grid;
+    grid-template-rows: 60px 1fr;
+    background-color: rgb(27, 27, 27);
+}
+
+.notepad-date {
+    text-align: center;
+    line-height: 60px;
+    color: white;
+}
+
+.notepad-text {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(27, 27, 27);
+    color: white;
+    padding: 0 40px;
+}
+
+.notepad-title {
+    width: 100%;
+    font-size: 28px;
+    font-weight: bold;
+    padding-bottom: 8px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid gray;
+    background-color: rgb(27, 27, 27);
+    color: white;
+}
+
+.notepad-description {
+    font-size: 18px;
+    height: 100%;
+    background-color: rgb(27, 27, 27);
+    color: white;
+}
+
+.note-link {
+    position: relative;
+    display: block;
+}
+
+.note-link--active {
+    background-color: rgb(255, 223, 133);
+    outline: none;
+}
+
+.login-view {
+    display: none;
+}
+
+.note-title {
+    overflow: hidden;
+    text-overflow: break-word;
+}
