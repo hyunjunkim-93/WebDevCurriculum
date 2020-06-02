@@ -25,11 +25,9 @@ export default class Notepad {
 
     getNewNote() {
         const note = {
-            id: this.getUniqueId(),
             title: 'New Title',
             description: 'No Description',
-            created: util.getCurrentDate(),
-            modified: util.getCurrentDate(),
+            updatedAt: util.getCurrentDate(),
         }
         return note;
     }
@@ -40,30 +38,50 @@ export default class Notepad {
 
     findCurrentNote(id) {
         const result = this.#notes.find(el => {
-            return el.id === id;
+            return el.id === Number(id);
         });
         return result;
     }
 
+    checkModified(obj) {
+        const isModified = this.#currentNote.title !== obj.title || this.#currentNote.description !== obj.description;
+        return isModified;
+    }
+
     saveCurrentNote(obj) {
-        const isModified = this.#currentNote.title !== obj.title|| this.#currentNote.description !== obj.description;
-        if (isModified) {
-            this.modifyCurrentNote(obj);
-            notepadApi.updateNote(this.#currentNote);
-        } else {
-            return;
-        }
+        const modifiedNote = {
+            title: obj.title,
+            description: obj.description,
+            id: this.#currentNote.id,
+        };
+
+        return notepadApi.updateNote(modifiedNote)
+            .then(data => {
+                if (data.ok) {
+                    this.modifyCurrentNote(data.item);
+                    return;
+                } else {
+                    alert(data.msg);
+                }
+            })
     }
 
     modifyCurrentNote(obj) {
-        this.#currentNote.modified = util.getCurrentDate();
         this.#currentNote.title = obj.title || this.#currentNote.title;
         this.#currentNote.description = obj.description || this.#currentNote.description;
+        this.#currentNote.updatedAt = obj.updatedAt || this.#currentNote.updatedAt;
     }
 
     addNote(note) {
-        this.#notes.push(note);
-        notepadApi.createNote(note);
+        return notepadApi.createNote(note)
+        .then(data => {
+            if (data.ok) {
+                this.#notes.push(data.item);
+                return data.item;
+            } else {
+                alert(data.msg);
+            }
+        })
     }
 
     deleteNote(id) {
@@ -90,8 +108,8 @@ export default class Notepad {
 
     sortNotes() {
         this.#notes.sort((a, b) => {
-            const firstValue = a.modified.replace(/[^0-9]/g,"");
-            const secondValue = b.modified.replace(/[^0-9]/g,"");
+            const firstValue = a.updatedAt.replace(/[^0-9]/g,"");
+            const secondValue = b.updatedAt.replace(/[^0-9]/g,"");
             return firstValue - secondValue;
         });
     }

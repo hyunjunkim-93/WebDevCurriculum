@@ -57,13 +57,13 @@ export default class ViewNoteList {
         const title = this.#currentNoteLi.querySelector('.note-title');
         const date = this.#currentNoteLi.querySelector('.note-date');
         title.innerHTML = note.title;
-        date.innerHTML = note.modified;
+        date.innerHTML = note.updatedAt;
     }
 
     setNewNoteEl(obj) {
         const { li, title, date } = this.cloneLiTemplate();
         title.innerHTML = obj.title;
-        date.innerHTML = obj.modified;
+        date.innerHTML = obj.updatedAt;
         li.id = obj.id;
         this.#newNoteLi = li;
     }

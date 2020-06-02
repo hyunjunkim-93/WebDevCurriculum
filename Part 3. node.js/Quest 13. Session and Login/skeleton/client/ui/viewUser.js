@@ -28,8 +28,8 @@ export default class ViewUser {
         this.#logoutBtn.addEventListener('click', callback);
     }
 
-    renderLoginView(user) {
-        this.#nickname.innerHTML = user.nickname;
+    renderLoginView(nickname) {
+        this.#nickname.innerHTML = nickname;
         this.#loginView.style.display = 'inline-block';
         this.#logoutView.style.display = 'none';
     }

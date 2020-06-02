@@ -2,13 +2,10 @@ import userApi from '../api/user_api.js';
 
 export default class User {
     #login = false;
-    #user;
+    #nickname;
 
     get login() {
         return this.#login;
-    }
-    get userInfo() {
-        return this.#user;
     }
     changeLoginStatus() {
         this.#login = !this.#login;
@@ -18,9 +15,9 @@ export default class User {
         return userApi.getLoginInfo()
             .then(data => {
                 if (data.ok) {
-                    this.#login = data.user.login;
-                    this.#user = data.user;
-                    return data.user;
+                    this.#login = data.item.login;
+                    this.#nickname = data.item.nickname;
+                    return this.#nickname;
                 } else {
                     alert(data.msg);
                 }
@@ -31,9 +28,9 @@ export default class User {
         return userApi.login(loginInfo)
             .then(data => {
                 if (data.ok) {
-                    this.#login = data.user.login;
-                    this.#user = data.user;
-                    return data.user;
+                    this.#login = data.item.login;
+                    this.#nickname = data.item.nickname;
+                    return this.#nickname;
                 } else {
                     alert(data.msg);
                 }

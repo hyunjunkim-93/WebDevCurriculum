@@ -34,7 +34,7 @@ export default class ViewNotepad {
     }
 
     renderNotepad(obj) {
-        this.#dateEl.innerHTML = obj.modified;
+        this.#dateEl.innerHTML = obj.updatedAt;
         this.#titleEl.value = obj.title;
         this.#descriptionEl.value = obj.description;
     }

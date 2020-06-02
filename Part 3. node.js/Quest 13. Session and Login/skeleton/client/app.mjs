@@ -33,36 +33,36 @@ class App {
 
     loadLoginInfo() {
         this.#User.callLoginInfoApi()
-            .then((user) => {
-                if (!user) return;
-                this.initNotepad(user);
+            .then(nickname => {
+                if (!nickname) return;
+                this.initNotepad(nickname);
             });
     }
 
     handleLogin(loginInfo) {
         this.#User.callLoginApi(loginInfo)
-            .then((user) => {
-                if (!user) return;
-                this.initNotepad(user);
+            .then((nickname) => {
+                if (!nickname) return;
+                this.initNotepad(nickname);
             });
     }
 
-    initNotepad(user) {
-        this.#ViewUser.renderLoginView(user);
+    initNotepad(nickname) {
+        this.#ViewUser.renderLoginView(nickname);
         this.#Notepad.getNotes()
             .then(() => {
                 if (this.#Notepad.all.length > 0) {
                     this.renderNotes(this.#Notepad.all);
                 }
 
-            })
+            });
         this.#User.callGetCurrentTabApi()
             .then(item => {
                 if (item.tab) {
                     this.#ViewNoteList.clickTab(item.tab);
                     this.#ViewNotepad.focusCursor(item.cursor);
                 }
-            })
+            });
     }
 
     renderNotes(notes) {
@@ -76,14 +76,16 @@ class App {
 
     handleAddNewNote() {
         const newNote = this.#Notepad.getNewNote();
-        this.#Notepad.addNote(newNote);
-        this.#ViewNoteList.setNewNoteEl(newNote);
-        this.#ViewNoteList.addSetNoteEvent(this.handleSetNote.bind(this));
-        this.#ViewNoteList.renderNote();
+        this.#Notepad.addNote(newNote)
+            .then(item => {
+                this.#ViewNoteList.setNewNoteEl(item);
+                this.#ViewNoteList.addSetNoteEvent(this.handleSetNote.bind(this));
+                this.#ViewNoteList.renderNote();
+            })
     }
 
     handleSaveCurrentTab(e) {
-        if (this.#User.login) {
+        if (this.#User.login && this.#Notepad.currentNote.title) {
             const currentTab = {
                 cursor: e.target.className,
                 tab: this.#ViewNoteList.currentNoteLi.id,
@@ -93,10 +95,14 @@ class App {
     }
 
     handleSaveNote() {
-        if (this.#User.login) {
+        if (this.#User.login && this.#Notepad.currentNote.title) {
             const obj = this.#ViewNotepad.getNoteValue();
-            this.#Notepad.saveCurrentNote(obj);
-            this.#ViewNoteList.updateTab(this.#Notepad.currentNote);
+            this.#Notepad.checkModified(obj)
+            ? this.#Notepad.saveCurrentNote(obj)
+                .then(() => {
+                    this.#ViewNoteList.updateTab(this.#Notepad.currentNote);
+                })
+            : console.log('Not modified');
         }
     }
 
@@ -111,6 +117,7 @@ class App {
         const id = this.#ViewNoteList.currentNoteLi.id;
         this.#ViewNoteList.deleteNoteLi();
         this.#Notepad.deleteNote(id);
+        this.#ViewNotepad.reset();
     }
 
     handleLogout() {

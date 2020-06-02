@@ -12,7 +12,7 @@ export default {
     
     getCurrentDate() {
         const { year, month, day, hour, minute, second } = this.getDateParts();
-        return `${year}/${month}/${day} ${hour}:${minute}:${second}`;
+        return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
     },
 
     getDateForId() {
