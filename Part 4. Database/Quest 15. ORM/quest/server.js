@@ -6,7 +6,7 @@ const FileStore = require('session-file-store')(session);
 
 const app = express();
 
-var corsOptions = {
+const corsOptions = {
     origin: 'http://localhost:8081',
 };
 
