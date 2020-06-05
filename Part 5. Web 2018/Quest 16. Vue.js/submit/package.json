@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+      "install-c": "cd client && yarn install",
+      "install-b": "cd backend && npm install",
       "start": "cd backend && node server.js"
   }
 }
