@@ -59,7 +59,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
-	module: {
+  module: {
     rules: [
       { test: /\.txt$/, use: 'raw-loader' }
     ]
